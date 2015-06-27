@@ -13,7 +13,7 @@ function preload() {
 
 function create() {
     cursors = game.input.keyboard.createCursorKeys();
-    picture = game.add.sprite(10, 425, 'EliasButton');
+    picture = game.add.sprite(135, 215, 'EliasButton');
     spawnEnemy();
 
     game.physics.enable(picture, Phaser.Physics.ARCADE);
@@ -24,6 +24,7 @@ function create() {
 
 function update() {
     movePicture();
+    killEnemy();
 }
 
 function movePicture() {
@@ -52,19 +53,40 @@ function spawnEnemy() {
     var ypos;
     var xspeed = 0;
     var yspeed = 0;
+    var randomNumber = Math.random();
+    var spriteSpeed = 50;
 
-    if (Math.random >= 0.5){
-        xpos = Math.random() * 250 + 10;
+    if (randomNumber >= 0.75){
+        xpos = Math.random() * 270;
         ypos = -50;
-        yspeed = 20;
+        yspeed = spriteSpeed;
+    }
+    else if (randomNumber >= 0.5) {
+        xpos = -50;
+        ypos = Math.random() * 430;
+        xspeed = spriteSpeed;
+    }
+    else if (randomNumber >= 0.25) {
+        xpos = Math.random() * 270;
+        ypos = 480;
+        yspeed = -spriteSpeed;
     }
     else {
-        xpos = -50;
-        ypos = Math.random() * 410 + 10;
-        xspeed = 20;
+        xpos = 320;
+        ypos = Math.random() * 430;
+        xspeed = -spriteSpeed;
     }
     enemy = game.add.sprite(xpos, ypos, 'RasmusButton');
     game.physics.enable(enemy, Phaser.Physics.ARCADE);
     enemy.body.velocity.y = yspeed;
     enemy.body.velocity.x = xspeed;
+}
+
+function killEnemy() {
+    if (enemy.x <= -60 || enemy.x >=330 || enemy.y <= -60 || enemy.y >= 490) {
+
+        enemy.kill();
+        spawnEnemy();
+
+    }
 }
