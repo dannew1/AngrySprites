@@ -8,12 +8,14 @@ var enemy;
 
 function preload() {
     game.load.image('EliasButton', 'Pictures/EliasButton.png');
-    game.load.image('RasmusButton', 'Pictures/MoneyButton.png');
+    game.load.image('RasmusButton', 'Pictures/RasmusButton.png');
+    game.load.image('MoaButton', 'Pictures/MoaButton.png');
+    game.load.image('MichelleButton', 'Pictures/MichelleButton.png');
 }
 
 function create() {
     cursors = game.input.keyboard.createCursorKeys();
-    picture = game.add.sprite(135, 215, 'EliasButton');
+    picture = game.add.sprite(135, 215, 'MichelleButton');
     spawnEnemy();
 
     game.physics.enable(picture, Phaser.Physics.ARCADE);
@@ -76,7 +78,7 @@ function spawnEnemy() {
         ypos = Math.random() * 430;
         xspeed = -spriteSpeed;
     }
-    enemy = game.add.sprite(xpos, ypos, 'RasmusButton');
+    enemy = game.add.sprite(xpos, ypos, 'MoaButton');
     game.physics.enable(enemy, Phaser.Physics.ARCADE);
     enemy.body.velocity.y = yspeed;
     enemy.body.velocity.x = xspeed;
