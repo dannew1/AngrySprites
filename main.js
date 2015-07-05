@@ -3,8 +3,10 @@
  */
 var game = new Phaser.Game(320, 480, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 var cursors;
-var picture;
-var enemy;
+var player;
+var enemies;
+var spawningTime;
+var spawningDelay = 5000;
 
 function preload() {
     game.load.image('EliasButton', 'Pictures/EliasButton.png');
@@ -15,18 +17,24 @@ function preload() {
 
 function create() {
     cursors = game.input.keyboard.createCursorKeys();
-    picture = game.add.sprite(135, 215, 'MichelleButton');
+    player = game.add.sprite(135, 215, 'MichelleButton');
+    game.physics.enable(player, Phaser.Physics.ARCADE);
+
+    enemies = game.add.group();
+    enemies.enableBody = true;
+    enemies.physicsBodyType = Phaser.Physics.ARCADE;
+    //enemy.setAll('outOfBoundsKill', true);
+    //enemy.setAll('checkWorldBounds', true);
+
+    spawningTime = game.time.now + spawningDelay;
     spawnEnemy();
-
-    game.physics.enable(picture, Phaser.Physics.ARCADE);
-
-
-
 }
 
 function update() {
     movePicture();
-    killEnemy();
+    killPlayer();
+    enemies.forEach(killEnemy, this);
+    newEnemies();
 }
 
 function movePicture() {
@@ -46,8 +54,8 @@ function movePicture() {
         yspeed = 35;
     }
 
-    picture.body.velocity.x = xspeed;
-    picture.body.velocity.y = yspeed;
+    player.body.velocity.x = xspeed;
+    player.body.velocity.y = yspeed;
 }
 
 function spawnEnemy() {
@@ -78,17 +86,31 @@ function spawnEnemy() {
         ypos = Math.random() * 430;
         xspeed = -spriteSpeed;
     }
-    enemy = game.add.sprite(xpos, ypos, 'MoaButton');
-    game.physics.enable(enemy, Phaser.Physics.ARCADE);
+
+    var enemy = enemies.create(xpos, ypos, 'MoaButton');
     enemy.body.velocity.y = yspeed;
     enemy.body.velocity.x = xspeed;
 }
 
-function killEnemy() {
-    if (enemy.x <= -60 || enemy.x >=330 || enemy.y <= -60 || enemy.y >= 490) {
+function killEnemy(enemy) {
+    if (enemy.x <= -60 || enemy.x >= 330 || enemy.y <= -60 || enemy.y >= 490) {
 
-        enemy.kill();
+        enemy.destroy();
         spawnEnemy();
 
+    }
+}
+function killPlayer() {
+    game.physics.arcade.overlap(player, enemies, playerDies, null, this);
+}
+
+function playerDies () {
+    player.kill();
+}
+
+function newEnemies () {
+    if (game.time.now >= spawningTime){
+        spawningTime = game.time.now + spawningDelay;
+        spawnEnemy();
     }
 }
