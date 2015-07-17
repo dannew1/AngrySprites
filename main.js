@@ -1,7 +1,7 @@
 /**
  * Created by Daniel on 2015-06-09.
  */
-var game = new Phaser.Game(320, 480, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(720, 480, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 var cursors;
 var player;
 var enemies;
@@ -26,64 +26,67 @@ function create() {
     //enemy.setAll('outOfBoundsKill', true);
     //enemy.setAll('checkWorldBounds', true);
 
+    startingTime = game.time.now;
     spawningTime = game.time.now + spawningDelay;
-    spawnEnemy();
+    spawnEnemy(startingTime);
 }
 
 function update() {
     movePicture();
     killPlayer();
-    enemies.forEach(killEnemy, this);
     newEnemies();
+    enemies.forEach(killEnemy, this);
+    //increaseSpeedOfEnemies(enemies, startingTime);
 }
 
 function movePicture() {
     var xspeed = 0;
     var yspeed = 0;
+    var movingSpeed = 50;
 
     if (cursors.left.isDown) {
-        xspeed = -35;
+        xspeed = -movingSpeed;
     }
     if (cursors.right.isDown) {
-        xspeed = 35;
+        xspeed = movingSpeed;
     }
     if (cursors.up.isDown) {
-        yspeed = -35;
+        yspeed = -movingSpeed;
     }
     if (cursors.down.isDown) {
-        yspeed = 35;
+        yspeed = movingSpeed;
     }
 
     player.body.velocity.x = xspeed;
     player.body.velocity.y = yspeed;
 }
 
-function spawnEnemy() {
+function spawnEnemy(startingTime) {
     var xpos;
     var ypos;
     var xspeed = 0;
     var yspeed = 0;
     var randomNumber = Math.random();
-    var spriteSpeed = 50;
+    var spriteSpeed = ((game.time.now - startingTime) * 0.0001 + 1) * 50;
 
     if (randomNumber >= 0.75){
-        xpos = Math.random() * 270;
+        xpos = Math.random() * (game.width - 50);
         ypos = -50;
         yspeed = spriteSpeed;
     }
     else if (randomNumber >= 0.5) {
         xpos = -50;
-        ypos = Math.random() * 430;
+        ypos = Math.random() * (game.height - 50);
         xspeed = spriteSpeed;
-    }
+}
     else if (randomNumber >= 0.25) {
-        xpos = Math.random() * 270;
-        ypos = 480;
+        xpos = Math.random() * (game.width - 50);
+        ypos = game.height;
         yspeed = -spriteSpeed;
     }
     else {
-        xpos = 320;
-        ypos = Math.random() * 430;
+        xpos = game.width;
+        ypos = Math.random() * (game.height - 50);
         xspeed = -spriteSpeed;
     }
 
@@ -93,10 +96,10 @@ function spawnEnemy() {
 }
 
 function killEnemy(enemy) {
-    if (enemy.x <= -60 || enemy.x >= 330 || enemy.y <= -60 || enemy.y >= 490) {
+    if (enemy.x <= -60 || enemy.x >= (game.width + 10) || enemy.y <= -60 || enemy.y >= (game.height + 10)) {
 
         enemy.destroy();
-        spawnEnemy();
+        spawnEnemy(startingTime);
 
     }
 }
@@ -111,6 +114,16 @@ function playerDies () {
 function newEnemies () {
     if (game.time.now >= spawningTime){
         spawningTime = game.time.now + spawningDelay;
-        spawnEnemy();
+        spawnEnemy(startingTime);
     }
+}
+
+function increaseSpeedOfEnemies (enemies, startingTime) {
+
+    speedOfEnemy = (game.time.now - startingTime) * 0.0001 + 1;
+
+    enemies.forEach(function(enemy) {
+        enemy.body.velocity.y = enemy.body.velocity.y * speedOfEnemy;
+    }, this)
+
 }
