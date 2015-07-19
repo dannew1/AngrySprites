@@ -7,6 +7,8 @@ var player;
 var enemies;
 var spawningTime;
 var spawningDelay = 5000;
+var scoreText;
+var playerLife = 1;
 
 function preload() {
     game.load.image('EliasButton', 'Pictures/EliasButton.png');
@@ -29,6 +31,9 @@ function create() {
     startingTime = game.time.now;
     spawningTime = game.time.now + spawningDelay;
     spawnEnemy(startingTime);
+
+    scoreText = game.add.text(10,420, '0',
+        {font: '52px Arial', fill: '#ffa'});
 }
 
 function update() {
@@ -36,7 +41,8 @@ function update() {
     killPlayer();
     newEnemies();
     enemies.forEach(killEnemy, this);
-    //increaseSpeedOfEnemies(enemies, startingTime);
+    setScoreCounter(startingTime);
+    //scoreText.text = Math.floor((game.time.now - startingTime)/1000) + " sec"
 }
 
 function movePicture() {
@@ -67,7 +73,7 @@ function spawnEnemy(startingTime) {
     var xspeed = 0;
     var yspeed = 0;
     var randomNumber = Math.random();
-    var spriteSpeed = ((game.time.now - startingTime) * 0.0001 + 1) * 50;
+    var spriteSpeed = ((game.time.now - startingTime) * 0.00001 + 1) * 50;
 
     if (randomNumber >= 0.75){
         xpos = Math.random() * (game.width - 50);
@@ -104,13 +110,19 @@ function killEnemy(enemy) {
     }
 }
 function killPlayer() {
-    game.physics.arcade.overlap(player, enemies, playerDies, null, this);
+    game.physics.arcade.overlap(player, enemies, playerLoosesLife, null, this);
 }
 
 function playerDies () {
     player.kill();
 }
 
+function playerLoosesLife () {
+    playerLife -= 1;
+    if (playerLife <= 0) {
+        playerDies();
+    }
+}
 function newEnemies () {
     if (game.time.now >= spawningTime){
         spawningTime = game.time.now + spawningDelay;
@@ -118,12 +130,8 @@ function newEnemies () {
     }
 }
 
-function increaseSpeedOfEnemies (enemies, startingTime) {
-
-    speedOfEnemy = (game.time.now - startingTime) * 0.0001 + 1;
-
-    enemies.forEach(function(enemy) {
-        enemy.body.velocity.y = enemy.body.velocity.y * speedOfEnemy;
-    }, this)
-
+function setScoreCounter (startinTime) {
+    if (playerLife >= 1){
+        scoreText.text = Math.floor((game.time.now - startingTime)/1000) + " sec"
+    }
 }
