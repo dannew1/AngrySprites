@@ -9,12 +9,15 @@ var spawningTime;
 var spawningDelay = 5000;
 var scoreText;
 var playerLife = 1;
+var updateStop = false;
 
 function preload() {
     game.load.image('EliasButton', 'Pictures/EliasButton.png');
     game.load.image('RasmusButton', 'Pictures/RasmusButton.png');
     game.load.image('MoaButton', 'Pictures/MoaButton.png');
     game.load.image('MichelleButton', 'Pictures/MichelleButton.png');
+    game.load.audio("spawnSound", "Spawn enemy.wav");
+    game.load.audio("deathSound", "Death.wav");
 }
 
 function create() {
@@ -37,12 +40,13 @@ function create() {
 }
 
 function update() {
-    movePicture();
-    killPlayer();
-    newEnemies();
-    enemies.forEach(killEnemy, this);
-    setScoreCounter(startingTime);
-    //scoreText.text = Math.floor((game.time.now - startingTime)/1000) + " sec"
+    if (updateStop == false) {
+        movePicture();
+        killPlayer();
+        newEnemies();
+        setScoreCounter(startingTime);
+        enemies.forEach(killEnemy, this);
+    }
 }
 
 function movePicture() {
@@ -99,6 +103,9 @@ function spawnEnemy(startingTime) {
     var enemy = enemies.create(xpos, ypos, 'MoaButton');
     enemy.body.velocity.y = yspeed;
     enemy.body.velocity.x = xspeed;
+
+    game.spawnSnd = game.add.audio('spawnSound');
+    game.spawnSnd.play();
 }
 
 function killEnemy(enemy) {
@@ -115,6 +122,9 @@ function killPlayer() {
 
 function playerDies () {
     player.kill();
+    game.deathSnd = game.add.audio('deathSound');
+    game.deathSnd.play();
+    updateStop = true;
 }
 
 function playerLoosesLife () {
@@ -131,6 +141,7 @@ function newEnemies () {
 }
 
 function setScoreCounter (startinTime) {
+    //Kan radera if()
     if (playerLife >= 1){
         scoreText.text = Math.floor((game.time.now - startingTime)/1000) + " sec"
     }
