@@ -16,8 +16,9 @@ function preload() {
     game.load.image('RasmusButton', 'Pictures/RasmusButton.png');
     game.load.image('MoaButton', 'Pictures/MoaButton.png');
     game.load.image('MichelleButton', 'Pictures/MichelleButton.png');
-    game.load.audio("spawnSound", "Spawn enemy.wav");
-    game.load.audio("deathSound", "Death.wav");
+    game.load.audio("spawnSound", "Sounds/Spawn enemy.wav");
+    game.load.audio("deathSound", "Sounds/Death.wav");
+    //game.load.audio("basicSong", "Sounds/basicSong.wav");
 }
 
 function create() {
@@ -37,6 +38,8 @@ function create() {
 
     scoreText = game.add.text(10,420, '0',
         {font: '52px Arial', fill: '#ffa'});
+
+
 }
 
 function update() {
@@ -46,6 +49,7 @@ function update() {
         newEnemies();
         setScoreCounter(startingTime);
         enemies.forEach(killEnemy, this);
+        loopSong();
     }
 }
 
@@ -146,3 +150,14 @@ function setScoreCounter (startinTime) {
         scoreText.text = Math.floor((game.time.now - startingTime)/1000) + " sec"
     }
 }
+
+function loopSong()
+    {
+        basic_song = new Audio('Sounds/basicSong.wav');
+        game.basic_song = game.add.audio('basicSong');
+        basic_song.addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
+    }, false);
+        basic_song.play();
+    }
