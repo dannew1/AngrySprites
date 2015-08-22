@@ -39,7 +39,7 @@ function create() {
     scoreText = game.add.text(10,420, '0',
         {font: '52px Arial', fill: '#ffa'});
 
-
+    loopSong();
 }
 
 function update() {
@@ -49,7 +49,7 @@ function update() {
         newEnemies();
         setScoreCounter(startingTime);
         enemies.forEach(killEnemy, this);
-        loopSong();
+
     }
 }
 
@@ -151,13 +151,11 @@ function setScoreCounter (startinTime) {
     }
 }
 
-function loopSong()
-    {
-        basic_song = new Audio('Sounds/basicSong.wav');
-        game.basic_song = game.add.audio('basicSong');
-        basic_song.addEventListener('ended', function() {
-            this.currentTime = 0;
-            this.play();
-    }, false);
+function loopSong() {
+    basic_song = new Audio('Sounds/basicSong.wav');
+    game.basic_song = game.add.audio('basicSong');
+    basic_song.addEventListener('ended', function() {
         basic_song.play();
-    }
+    }, false);
+    basic_song.play();
+}
