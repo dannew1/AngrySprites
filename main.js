@@ -10,6 +10,7 @@ var spawningDelay = 5000;
 var scoreText;
 var playerLife = 1;
 var updateStop = false;
+var nameList = [];
 
 function preload() {
     game.load.image('EliasButton', 'Pictures/EliasButton.png');
@@ -19,6 +20,7 @@ function preload() {
     game.load.audio("spawnSound", "Sounds/Spawn enemy.wav");
     game.load.audio("deathSound", "Sounds/Death.wav");
     //game.load.audio("basicSong", "Sounds/basicSong.wav");
+    nameList.push("EliasButton", "RasmusButton", "MoaButton");
 }
 
 function create() {
@@ -82,6 +84,7 @@ function spawnEnemy(startingTime) {
     var yspeed = 0;
     var randomNumber = Math.random();
     var spriteSpeed = ((game.time.now - startingTime) * 0.00001 + 1) * 50;
+    var selectedFace = Math.floor(Math.random() * 3);
 
     if (randomNumber >= 0.75){
         xpos = Math.random() * (game.width - 50);
@@ -104,7 +107,7 @@ function spawnEnemy(startingTime) {
         xspeed = -spriteSpeed;
     }
 
-    var enemy = enemies.create(xpos, ypos, 'MoaButton');
+    var enemy = enemies.create(xpos, ypos, nameList[selectedFace]);
     enemy.body.velocity.y = yspeed;
     enemy.body.velocity.x = xspeed;
 
