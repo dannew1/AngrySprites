@@ -36,12 +36,12 @@ function create() {
 
     startingTime = game.time.now;
     spawningTime = game.time.now + spawningDelay;
-    spawnEnemy(startingTime);
+    spawnEnemy(startingTime)
 
     scoreText = game.add.text(10,420, '0',
-        {font: '52px Arial', fill: '#ffa'});
+        {font: '52px Aria;l', fill: '#ffa'});
 
-    loopSong();
+    //loopSong();
 }
 
 function update() {
@@ -53,6 +53,8 @@ function update() {
         enemies.forEach(killEnemy, this);
 
     }
+    outerWalls();
+    //console.log(player.x)
 }
 
 function movePicture() {
@@ -161,4 +163,18 @@ function loopSong() {
         basic_song.play();
     }, false);
     basic_song.play();
+}
+
+function outerWalls() {
+    if(player.x >= game.width - player.width + 1)
+        player.x = game.width - player.width;
+    if(player.x <= -1)
+    {
+        player.x = 0;
+        player.body.velocity.x = 0;
+    }
+    if(player.y >= game.height - player.height + 1)
+        player.y = game.height - player.height;
+    if(player.y <= -1)
+        player.y = 0;
 }
