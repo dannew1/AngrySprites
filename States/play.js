@@ -13,16 +13,7 @@ var playState = {
 
 
     preload: function () {
-        this.game.load.image('EliasButton', 'Pictures/EliasButton.png');
-        this.game.load.image('RasmusButton', 'Pictures/RasmusButton.png');
-        this.game.load.image('MoaButton', 'Pictures/MoaButton.png');
-        this.game.load.image('MichelleButton', 'Pictures/MichelleButton.png');
-        this.game.load.image('KajsaButton', 'Pictures/KajsaButton.png');
-        this.game.load.image('BenjaminButton', 'Pictures/BenjaminButton.png');
-        this.game.load.audio("spawnSound", "Sounds/Spawn enemy.wav");
-        this.game.load.audio("deathSound", "Sounds/Death.wav");
-        this.game.load.audio("basicSong", "Sounds/basicSong.wav");
-        nameList.push("EliasButton", "RasmusButton", "MoaButton", "KajsaButton", "BenjaminButton");
+
     },
 
     create: function () {
@@ -43,7 +34,7 @@ var playState = {
         this.scoreText = game.add.text(10, 420, '0',
             {font: '52px Aria;l', fill: '#ffa'});
 
-        //loopSong();
+        this.loopSong();
     },
 
     update: function () {
@@ -133,9 +124,9 @@ var playState = {
 
     playerDies: function () {
         player.kill();
-        game.deathSnd = game.add.audio('deathSound');
-        game.deathSnd.play();
         updateStop = true;
+        game.score = this.scoreText.text
+        game.state.start('win');
     },
 
     playerLoosesLife: function () {
