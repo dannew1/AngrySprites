@@ -34,7 +34,7 @@ var playState = {
         this.scoreText = game.add.text(10, 420, '0',
             {font: '52px Aria;l', fill: '#ffa'});
 
-        this.loopSong();
+        //this.loopSong();
     },
 
     update: function () {
