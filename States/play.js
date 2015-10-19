@@ -7,7 +7,7 @@ var spawningDelay = 5000;
 var playerLife = 1;
 var updateStop = false;
 var nameList = [];
-
+var deathCharge;
 var playState = {
 
 
@@ -33,6 +33,7 @@ var playState = {
 
         this.scoreText = game.add.text(10, 420, '0',
             {font: '52px Aria;l', fill: '#ffa'});
+        deathCharge = 1;
 
         //this.loopSong();
     },
@@ -44,7 +45,7 @@ var playState = {
             this.newEnemies();
             this.setScoreCounter();
             enemies.forEach(this.killEnemy, this);
-
+            this.deathCall(enemies);
         }
         this.outerWalls();
         //console.log(player.x)
@@ -79,7 +80,7 @@ var playState = {
         var yspeed = 0;
         var randomNumber = Math.random();
         var spriteSpeed = ((game.time.now - this.startingTime) * 0.00001 + 1) * 50;
-        var selectedFace = Math.floor(Math.random() * 5);
+        var selectedFace = Math.floor(Math.random() * 6);
 
         if (randomNumber >= 0.75) {
             xpos = Math.random() * (game.width - 50);
@@ -150,7 +151,7 @@ var playState = {
     },
 
     loopSong: function () {
-        this.basic_song = game.add.audio('Sounds/basicSong.wav');
+        this.basic_song = game.add.audio('Sounds/basicSong.mp3');
         game.basic_song = game.add.audio('basicSong');
         var that = this;
         this.basic_song.addEventListener('ended', function () {
@@ -168,5 +169,22 @@ var playState = {
             player.y = game.height - player.height;
         if (player.y <= 0)
             player.y = 0;
-    }
+    },
+
+    deathCall: function (enemies) {
+        zKey = this.input.keyboard.addKey(Phaser.Keyboard.Z);
+
+        if (zKey.isDown && deathCharge >= 1) {
+            console.log(enemies.length)
+            deathCharge =- 1;
+            for(var i = enemies.length - 1; i >= 0; i--) {
+                enemies.forEach(this.deathActivate, this);
+            }
+        }
+    },
+
+    deathActivate: function (enemy) {
+        enemy.destroy();
+        console.log(enemies.length)
+    },
 };

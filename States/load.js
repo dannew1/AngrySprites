@@ -13,10 +13,11 @@ var loadState = {
         game.load.image('MichelleButton', 'Pictures/MichelleButton.png');
         game.load.image('KajsaButton', 'Pictures/KajsaButton.png');
         game.load.image('BenjaminButton', 'Pictures/BenjaminButton.png');
-        game.load.audio("spawnSound", "Sounds/Spawn enemy.wav");
-        game.load.audio("deathSound", "Sounds/Death.wav");
-        game.load.audio("basicSong", "Sounds/basicSong.wav");
-        nameList.push("EliasButton", "RasmusButton", "MoaButton", "KajsaButton", "BenjaminButton");
+        game.load.image('PernillaButton', 'Pictures/PernillaButton.png');
+        game.load.audio("spawnSound", "Sounds/Spawn enemy.mp3");
+        game.load.audio("deathSound", "Sounds/Death.mp3");
+        game.load.audio("basicSong", "Sounds/basicSong.mp3");
+        nameList.push("EliasButton", "RasmusButton", "MoaButton", "KajsaButton", "BenjaminButton", "PernillaButton");
 
     },
 
