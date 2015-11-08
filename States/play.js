@@ -8,6 +8,8 @@ var playerLife = 1;
 var updateStop = false;
 var nameList = [];
 var deathCharge;
+var movingSpeed = 50;
+var baseEnemySpeed = 50;
 var playState = {
 
 
@@ -45,7 +47,7 @@ var playState = {
             this.newEnemies();
             this.setScoreCounter();
             enemies.forEach(this.killEnemy, this);
-            this.deathCall(enemies);
+            this.deathCall(enemies, player);
         }
         this.outerWalls();
         //console.log(player.x)
@@ -54,7 +56,7 @@ var playState = {
     movePicture: function () {
         var xspeed = 0;
         var yspeed = 0;
-        var movingSpeed = 50;
+
 
         if (cursors.left.isDown) {
             xspeed = -movingSpeed;
@@ -79,7 +81,7 @@ var playState = {
         var xspeed = 0;
         var yspeed = 0;
         var randomNumber = Math.random();
-        var spriteSpeed = ((game.time.now - this.startingTime) * 0.00001 + 1) * 50;
+        var spriteSpeed = ((game.time.now - this.startingTime) * 0.00001 + 1) * baseEnemySpeed;
         var selectedFace = Math.floor(Math.random() * 6);
 
         if (randomNumber >= 0.75) {
@@ -171,20 +173,29 @@ var playState = {
             player.y = 0;
     },
 
-    deathCall: function (enemies) {
+    deathCall: function (enemies, player) {
         zKey = this.input.keyboard.addKey(Phaser.Keyboard.Z);
 
         if (zKey.isDown && deathCharge >= 1) {
-            console.log(enemies.length)
             deathCharge =- 1;
-            for(var i = enemies.length - 1; i >= 0; i--) {
-                enemies.forEach(this.deathActivate, this);
-            }
+            this.groupCleanUp(enemies);
+            movingSpeed = 30;
+            baseEnemySpeed = 75;
         }
     },
 
-    deathActivate: function (enemy) {
-        enemy.destroy();
-        console.log(enemies.length)
+    groupCleanUp: function(enemies) {
+        var aCleanup = [];
+        enemies.forEach(function(enemy){
+            aCleanup.push(enemy);
+        });
+
+        var i = aCleanup.length - 1;
+        while(i > -1)
+        {
+            var getitem = aCleanup[i];
+            getitem.destroy();
+            i--;
+        }
     },
 };
