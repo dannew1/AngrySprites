@@ -2,7 +2,7 @@ var cursors;
 var player;
 var enemies;
 var spawningTime;
-var spawningDelay = 5000;
+var spawningDelay = 15000;
 //var scoreText;
 var playerLife = 1;
 var updateStop = false;
@@ -26,18 +26,22 @@ var playState = {
         enemies = game.add.group();
         enemies.enableBody = true;
         enemies.physicsBodyType = Phaser.Physics.ARCADE;
-        //enemy.setAll('outOfBoundsKill', true);
-        //enemy.setAll('checkWorldBounds', true);
 
         this.startingTime = game.time.now;
         spawningTime = game.time.now + spawningDelay;
-        this.spawnEnemy();
+        var i = 4;
+        while(i > -1)
+            {
+                spawnEnemy(this.startingTime);
+                i--;
+            }
+
 
         this.scoreText = game.add.text(10, 420, '0',
             {font: '52px Aria;l', fill: '#ffa'});
         deathCharge = 1;
 
-        //this.loopSong();
+        this.loopSong();
     },
 
     update: function () {
@@ -75,43 +79,7 @@ var playState = {
         player.body.velocity.y = yspeed;
     },
 
-    spawnEnemy: function () {
-        var xpos;
-        var ypos;
-        var xspeed = 0;
-        var yspeed = 0;
-        var randomNumber = Math.random();
-        var spriteSpeed = ((game.time.now - this.startingTime) * 0.00001 + 1) * baseEnemySpeed;
-        var selectedFace = Math.floor(Math.random() * 6);
-
-        if (randomNumber >= 0.75) {
-            xpos = Math.random() * (game.width - 50);
-            ypos = -50;
-            yspeed = spriteSpeed;
-        }
-        else if (randomNumber >= 0.5) {
-            xpos = -50;
-            ypos = Math.random() * (game.height - 50);
-            xspeed = spriteSpeed;
-        }
-        else if (randomNumber >= 0.25) {
-            xpos = Math.random() * (game.width - 50);
-            ypos = game.height;
-            yspeed = -spriteSpeed;
-        }
-        else {
-            xpos = game.width;
-            ypos = Math.random() * (game.height - 50);
-            xspeed = -spriteSpeed;
-        }
-
-        var enemy = enemies.create(xpos, ypos, nameList[selectedFace]);
-        enemy.body.velocity.y = yspeed;
-        enemy.body.velocity.x = xspeed;
-
-        game.spawnSnd = game.add.audio('spawnSound');
-        game.spawnSnd.play();
-    },
+    //////////////
 
     killEnemy: function (enemy) {
         if (enemy.x <= -60 || enemy.x >= (game.width + 10) || enemy.y <= -60 || enemy.y >= (game.height + 10)) {
@@ -141,7 +109,7 @@ var playState = {
     newEnemies: function () {
         if (game.time.now >= spawningTime) {
             spawningTime = game.time.now + spawningDelay;
-            this.spawnEnemy(this.startingTime);
+            spawnEnemy(this.startingTime);
         }
     },
 
@@ -153,13 +121,9 @@ var playState = {
     },
 
     loopSong: function () {
-        this.basic_song = game.add.audio('Sounds/basicSong.mp3');
-        game.basic_song = game.add.audio('basicSong');
+        basic_song = game.add.audio('basicSong');
         var that = this;
-        this.basic_song.addEventListener('ended', function () {
-            that.basic_song.play();
-        }, false);
-        this.basic_song.play();
+        basic_song.play();
     },
 
     outerWalls: function () {
