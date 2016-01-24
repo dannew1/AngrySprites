@@ -1,10 +1,10 @@
-function spawnEnemy () {
+function spawnEnemy (startingTime) {
     var xpos;
     var ypos;
     var xspeed = 0;
     var yspeed = 0;
     var randomNumber = Math.random();
-    var spriteSpeed = ((game.time.now - this.startingTime) * 0.00001 + 1) * baseEnemySpeed;
+    var spriteSpeed = ((game.time.now - startingTime) * 0.00001 + 1) * baseEnemySpeed;
     var selectedFace = Math.floor(Math.random() * 6);
 
     if (randomNumber >= 0.75) {
@@ -35,6 +35,4 @@ function spawnEnemy () {
 
     game.spawnSnd = game.add.audio('spawnSound');
     game.spawnSnd.play();
-
-    console.log();
 }

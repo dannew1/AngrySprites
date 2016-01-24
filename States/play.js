@@ -85,7 +85,7 @@ var playState = {
         if (enemy.x <= -60 || enemy.x >= (game.width + 10) || enemy.y <= -60 || enemy.y >= (game.height + 10)) {
 
             enemy.destroy();
-            this.spawnEnemy(this.startingTime);
+            spawnEnemy(this.startingTime);
 
         }
     },
