@@ -6,7 +6,7 @@ var spawningDelay = 15000;
 //var scoreText;
 var playerLife = 1;
 var updateStop = false;
-var nameList = [];
+
 var deathCharge;
 var movingSpeed = 50;
 var baseEnemySpeed = 50;
@@ -30,12 +30,14 @@ var playState = {
         this.startingTime = game.time.now;
         spawningTime = game.time.now + spawningDelay;
         var i = 4;
-        while(i > -1)
-            {
-                spawnEnemy(this.startingTime);
-                i--;
-            }
+        //while(i > -1)
+            //{
+                //spawnEnemy(this.startingTime);
+                //i--;
 
+
+            //}
+        var test = new Enemy(game, this.startingTime)
 
         this.scoreText = game.add.text(10, 420, '0',
             {font: '52px Aria;l', fill: '#ffa'});
@@ -81,14 +83,7 @@ var playState = {
 
     //////////////
 
-    killEnemy: function (enemy) {
-        if (enemy.x <= -60 || enemy.x >= (game.width + 10) || enemy.y <= -60 || enemy.y >= (game.height + 10)) {
 
-            enemy.destroy();
-            spawnEnemy(this.startingTime);
-
-        }
-    },
     killPlayer: function () {
         game.physics.arcade.overlap(player, enemies, this.playerLoosesLife, null, this);
     },

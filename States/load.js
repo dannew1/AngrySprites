@@ -18,7 +18,7 @@ var loadState = {
         game.load.audio("spawnSound", "Sounds/Spawn enemy.mp3");
         game.load.audio("deathSound", "Sounds/Death.mp3");
         game.load.audio("basicSong", "Sounds/basicSong.mp3");
-        nameList.push("EliasButton", "RasmusButton", "MoaButton", "KajsaButton", "BenjaminButton", "PernillaButton");
+
 
     },
 
