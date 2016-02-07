@@ -29,10 +29,12 @@ Enemy = function (game, startingTime) {
         ypos = Math.random() * (game.height - 50);
         xspeed = -spriteSpeed;
     }
-
+    game.physics.arcade.enableBody(this);
+    //game.physics.enable(this, Phaser.Physics.ARCADE);
+    //game.physics.arcade.enable(this);
     //var enemy = enemies.create(xpos, ypos, nameList[selectedFace]);
-    //this.body.velocity.y = yspeed;
-    //this.body.velocity.x = xspeed;
+    this.body.velocity.y = yspeed;
+    this.body.velocity.x = xspeed;
     //this.tint = 0xCC0000;
 
     game.spawnSnd = game.add.audio('spawnSound');
@@ -45,6 +47,11 @@ Enemy = function (game, startingTime) {
 Enemy.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy.prototype.constructor = Enemy;
 
+Enemy.prototype.update = function() {
+
+
+
+};
 //function spawnEnemy (startingTime) {
 //    var xpos;
 //    var ypos;

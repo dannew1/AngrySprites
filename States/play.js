@@ -34,10 +34,10 @@ var playState = {
             //{
                 //spawnEnemy(this.startingTime);
                 //i--;
-
-
             //}
-        var test = new Enemy(game, this.startingTime)
+        var test = new Enemy(game, this.startingTime);
+        //game.add.existing(test);
+        enemies.addChild(test);
 
         this.scoreText = game.add.text(10, 420, '0',
             {font: '52px Aria;l', fill: '#ffa'});
@@ -52,7 +52,7 @@ var playState = {
             this.killPlayer();
             this.newEnemies();
             this.setScoreCounter();
-            enemies.forEach(this.killEnemy, this);
+            //enemies.forEach(this.killEnemy, this);
             this.deathCall(enemies, player);
         }
         this.outerWalls();
@@ -104,7 +104,7 @@ var playState = {
     newEnemies: function () {
         if (game.time.now >= spawningTime) {
             spawningTime = game.time.now + spawningDelay;
-            spawnEnemy(this.startingTime);
+            //spawnEnemy(this.startingTime);
         }
     },
 
