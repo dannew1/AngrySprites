@@ -2,7 +2,7 @@ var cursors;
 var player;
 var enemies;
 var spawningTime;
-var spawningDelay = 15000;
+var spawningDelay = 1500;
 //var scoreText;
 var playerLife = 1;
 var updateStop = false;
@@ -11,8 +11,6 @@ var deathCharge;
 var movingSpeed = 50;
 var baseEnemySpeed = 50;
 var playState = {
-
-
 
     preload: function () {
 
@@ -101,10 +99,14 @@ var playState = {
             this.playerDies();
         }
     },
+
     newEnemies: function () {
         if (game.time.now >= spawningTime) {
             spawningTime = game.time.now + spawningDelay;
             //spawnEnemy(this.startingTime);
+
+            var enemyInstance = new Enemy(game, this.startingTime);
+            enemies.addChild(enemyInstance);
         }
     },
 
