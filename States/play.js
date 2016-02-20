@@ -2,7 +2,7 @@ var cursors;
 var player;
 var enemies;
 var spawningTime;
-var spawningDelay = 1500;
+var spawningDelay = 5000;
 //var scoreText;
 var playerLife = 1;
 var updateStop = false;
