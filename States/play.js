@@ -27,6 +27,7 @@ var playState = {
 
         this.startingTime = game.time.now;
         spawningTime = game.time.now + spawningDelay;
+
         var i = 4;
         //while(i > -1)
             //{
