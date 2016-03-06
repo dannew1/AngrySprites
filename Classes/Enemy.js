@@ -4,8 +4,6 @@ Enemy = function (game, startingTime) {
     var nameList = [];
     nameList.push("EliasButton", "RasmusButton", "MoaButton", "KajsaButton", "BenjaminButton", "PernillaButton");
 
-
-
     Phaser.Sprite.call(this, game, 0, 0, nameList[selectedFace]);
 
     game.spawnSnd = game.add.audio('spawnSound');
@@ -74,7 +72,7 @@ Enemy.prototype.killEnemy = function(){
         console.log("reset")
 
     }
-}
+};
 
 Enemy.prototype.reset_position = function() {
 
@@ -85,4 +83,4 @@ Enemy.prototype.reset_position = function() {
     this.body.velocity.x = statObj.xspeed;
     this.body.velocity.y = statObj.yspeed;
 
-}
+};

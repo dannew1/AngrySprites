@@ -5,10 +5,10 @@ var spawningTime;
 var spawningDelay = 5000;
 //var scoreText;
 var playerLife = 1;
-var updateStop = false;
+//var updateStop = false;
 
 var deathCharge;
-var movingSpeed = 50;
+
 var baseEnemySpeed = 50;
 var playState = {
 
@@ -17,9 +17,6 @@ var playState = {
     },
 
     create: function () {
-        cursors = game.input.keyboard.createCursorKeys();
-        player = game.add.sprite(135, 215, 'MichelleButton');
-        game.physics.enable(player, Phaser.Physics.ARCADE);
 
         enemies = game.add.group();
         enemies.enableBody = true;
@@ -34,72 +31,40 @@ var playState = {
                 //spawnEnemy(this.startingTime);
                 //i--;
             //}
+
+        var test2 = new Player(game);
+        game.add.existing(test2);
+
         var test = new Enemy(game, this.startingTime);
         //game.add.existing(test);
         enemies.addChild(test);
 
         this.scoreText = game.add.text(10, 420, '0',
             {font: '52px Aria;l', fill: '#ffa'});
+
         deathCharge = 1;
 
         this.loopSong();
     },
 
     update: function () {
-        if (updateStop == false) {
-            this.movePicture();
-            this.killPlayer();
+        //if (updateStop == false) {
+
             this.newEnemies();
             this.setScoreCounter();
             //enemies.forEach(this.killEnemy, this);
             this.deathCall(enemies, player);
-        }
-        this.outerWalls();
+        //}
+
         //console.log(player.x)
     },
 
-    movePicture: function () {
-        var xspeed = 0;
-        var yspeed = 0;
 
-
-        if (cursors.left.isDown) {
-            xspeed = -movingSpeed;
-        }
-        if (cursors.right.isDown) {
-            xspeed = movingSpeed;
-        }
-        if (cursors.up.isDown) {
-            yspeed = -movingSpeed;
-        }
-        if (cursors.down.isDown) {
-            yspeed = movingSpeed;
-        }
-
-        player.body.velocity.x = xspeed;
-        player.body.velocity.y = yspeed;
-    },
 
     //////////////
 
 
-    killPlayer: function () {
-        game.physics.arcade.overlap(player, enemies, this.playerLoosesLife, null, this);
-    },
 
-    playerDies: function () {
-        player.kill();
-        updateStop = true;
-        game.score = this.scoreText.text
-        game.state.start('win');
-    },
-
-    playerLoosesLife: function () {
-        playerLife -= 1;
-        if (playerLife <= 0) {
-            this.playerDies();
-        }
-    },
 
     newEnemies: function () {
         if (game.time.now >= spawningTime) {
@@ -124,16 +89,8 @@ var playState = {
         basic_song.play();
     },
 
-    outerWalls: function () {
-        if (player.x >= game.width - player.width)
-            player.x = game.width - player.width;
-        if (player.x <= 0)
-            player.x = 0;
-        if (player.y >= game.height - player.height)
-            player.y = game.height - player.height;
-        if (player.y <= 0)
-            player.y = 0;
-    },
+
+
 
     deathCall: function (enemies, player) {
         zKey = this.input.keyboard.addKey(Phaser.Keyboard.Z);
@@ -145,7 +102,6 @@ var playState = {
             baseEnemySpeed = 75;
         }
     },
-
     groupCleanUp: function(enemies) {
         var aCleanup = [];
         enemies.forEach(function(enemy){
