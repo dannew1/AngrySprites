@@ -1,4 +1,4 @@
-Player = function (game)
+Player = function (game, startingTime)
 {
     cursors = game.input.keyboard.createCursorKeys();
 
@@ -9,6 +9,9 @@ Player = function (game)
 
     this.body.velocity.x = 0;
     this.body.velocity.y = 0;
+    this.playerLife = 1;
+    this.playerScore = 0;
+    this.startingTime = startingTime;
 
 };
 
@@ -19,7 +22,7 @@ Player.prototype.update = function() {
     this.movePicture();
     this.killPlayer();
     this.outerWalls();
-
+    this.setPlayerScore();
 };
 
 Player.prototype.movePicture = function () {
@@ -47,20 +50,22 @@ Player.prototype.movePicture = function () {
 };
 
 Player.prototype.killPlayer = function() {
-    game.physics.arcade.overlap(player, enemies, this.playerLoosesLife, null, this);
+
+    //game.physics.arcade.overlap(this, enemies, this.playerLoosesLife, null, this);
+    game.physics.arcade.collide(this, enemies, this.playerLoosesLife, null, this);
 };
 
 Player.prototype.playerDies = function() {
     this.kill();
     //updateStop = true;
-    game.score = this.scoreText.text
+    game.scoreText = this.playerScore;
     game.state.start('win');
 };
 
 Player.prototype.playerLoosesLife = function() {
     playerLife -= 1;
     if (playerLife <= 0) {
-        this.playerDies();
+        Player.prototype.playerDies();
     }
 };
 
@@ -73,4 +78,11 @@ Player.prototype.outerWalls = function() {
         this.y = game.height - this.height;
     if (this.y <= 0)
         this.y = 0;
+};
+
+Player.prototype.setPlayerScore = function() {
+    //Kan radera if()
+    if (this.playerLife >= 1) {
+        this.playerScore = Math.floor((game.time.now - this.startingTime) / 1000) + " sec";
+    }
 };

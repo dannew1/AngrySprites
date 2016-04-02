@@ -16,6 +16,9 @@ Enemy = function (game, startingTime) {
     this.startingTime = startingTime;
 
     this.reset_position();
+
+    this.spawnTime = game.time.now;
+    this.fireTrailTimer = 0;
 };
 
 Enemy.prototype = Object.create(Phaser.Sprite.prototype);
@@ -23,6 +26,7 @@ Enemy.prototype.constructor = Enemy;
 
 Enemy.prototype.update = function() {
     this.killEnemy();
+    this.spawnFireTrail();
 
 };
 
@@ -67,10 +71,7 @@ Enemy.prototype.generatePosition = function() {
 
 Enemy.prototype.killEnemy = function(){
     if (this.x <= -60 || this.x >= (game.width + 10) || this.y <= -60 || this.y >= (game.height + 10)) {
-
-        this.reset_position ();
-        console.log("reset")
-
+        this.reset_position();
     }
 };
 
@@ -84,3 +85,13 @@ Enemy.prototype.reset_position = function() {
     this.body.velocity.y = statObj.yspeed;
 
 };
+
+Enemy.prototype.spawnFireTrail = function() {
+    this.fireTrailTimer = game.time.now - this.spawnTime;
+    if(this.fireTrailTimer >= 1000){
+        test3 = new FireTrail(game, this.x, this.y);
+        game.add.existing(test3);
+        this.fireTrailTimer = 0;
+        this.spawnTime = game.time.now;
+    }
+}

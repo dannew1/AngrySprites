@@ -3,14 +3,20 @@ var player;
 var enemies;
 var spawningTime;
 var spawningDelay = 5000;
-//var scoreText;
+var scoreText;
 var playerLife = 1;
 //var updateStop = false;
 
 var deathCharge;
 
 var baseEnemySpeed = 50;
+var test;
+var test2;
+
 var playState = {
+
+    //fixa text i hörnet!!
+
 
     preload: function () {
 
@@ -32,14 +38,16 @@ var playState = {
                 //i--;
             //}
 
-        var test2 = new Player(game);
+        test2 = new Player(game, this.startingTime);
         game.add.existing(test2);
 
-        var test = new Enemy(game, this.startingTime);
+        test = new Enemy(game, this.startingTime);
         //game.add.existing(test);
         enemies.addChild(test);
 
-        this.scoreText = game.add.text(10, 420, '0',
+
+
+        game.score = game.add.text(10, 420, '0',
             {font: '52px Aria;l', fill: '#ffa'});
 
         deathCharge = 1;
@@ -57,14 +65,16 @@ var playState = {
         //}
 
         //console.log(player.x)
+        enemies.forEach(function(enemy) {
+            this.game.physics.arcade.overlap(test2, enemy, test2.playerLoosesLife, null, this);
+        }, this);
+        //game.physics.arcade.collide(test, enemies, this.derpFunktion, null, this);
     },
 
 
-
-    //////////////
-
-
-
+    derpFunktion: function () {
+        console.log("heelo")
+    },
 
     newEnemies: function () {
         if (game.time.now >= spawningTime) {
@@ -76,12 +86,7 @@ var playState = {
         }
     },
 
-    setScoreCounter: function () {
-        //Kan radera if()
-        if (playerLife >= 1) {
-            this.scoreText.text = Math.floor((game.time.now - this.startingTime) / 1000) + " sec"
-        }
-    },
+
 
     loopSong: function () {
         basic_song = game.add.audio('basicSong');
@@ -116,4 +121,10 @@ var playState = {
             i--;
         }
     },
+
+    setScoreCounter: function() {
+        game.score = test2.playerScore;
+        console.log(game.score);
+        //ska ända texten
+    }
 };
